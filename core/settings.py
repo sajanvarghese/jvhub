@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+SUPABASE_URL = os.getenv("SUPABASE_URL", "https://izhhbnqapegnaxosvxiz.supabase.co")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6aGhibnFhcGVnbmF4b3N2eGl6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTQ3MjksImV4cCI6MjA3MDk5MDcyOX0.RlXxP31V3_rmbzCpX-Il7xn6hAJq1DnP-EoVTCFDDSI")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'main',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +59,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'main/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
