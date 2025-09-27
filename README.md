@@ -14,8 +14,9 @@ This platform is very useful for wholesale agencies, as it streamlines order man
 ### Login Page
 ![Login Page](screenshots/login.png)
 
-### Register page
-![register page].(screenshots/register.png)
+Register Page  
+![Register Page](screenshots/register.png)
+
 
 ### Admin screenshots
 ![admin_screenshots].(screenshots/admin)
