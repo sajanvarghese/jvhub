@@ -10,3 +10,16 @@ Admin: The managing team of the wholesale agency. Admins can view orders, add pr
 Customer: Customers can browse products, place orders, and view their order details, including prices and delivery dates.Customers can only log in using their GST number, ensuring secure and verified access.
 
 This platform is very useful for wholesale agencies, as it streamlines order management and enhances overall business efficiency. It is built using Django for the backend, HTML, CSS, and JavaScript for the frontend, and Supabase as the database.
+## Screenshots
+### Login Page
+![Login Page](screenshots/login.png)
+
+### Register page
+![register page].(screenshots/register.png)
+
+### Admin screenshots
+![admin_screenshots].(screenshots/admin)
+
+### Customer screenhots
+![customer_screenshots].(screenshots/customer)
+
