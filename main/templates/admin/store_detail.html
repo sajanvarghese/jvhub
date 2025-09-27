@@ -1,0 +1,20 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Store Details: {{ store.store_name }}</h2>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <p><strong>Store Name:</strong> {{ store.name }}</p>
+            <p><strong>Owner Name:</strong> {{ store.username}}</p>
+            <p><strong>GST Number:</strong> {{ store.gst_number }}</p>
+            <p><strong>Pincode:</strong> {{ store.pincode }}</p>
+            <p><strong>Address:</strong> {{ store.address }}</p>
+            <p><strong>Customer Location:</strong> {{ store.location }}</p>
+        </div>
+    </div>
+
+    <a href="{% url 'admin_stores' %}" class="btn btn-primary mt-3">Back to Store List</a>
+</div>
+{% endblock %}

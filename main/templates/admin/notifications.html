@@ -1,0 +1,42 @@
+{% extends "admin/admin.html" %}
+{% block content %}
+<h2>Notifications</h2>
+<ul id="notifications-list">
+{% for n in notifications %}
+    <a href="{% url 'notification_redirect' n.id %}" 
+       style="display:block; padding:10px; margin-bottom:5px;
+              background-color: {% if not n.is_read %}#f1f1f1{% else %}#ffffff{% endif %};
+              text-decoration:none; color:black; border-radius:5px;">
+        {{ n.message }} <small>({{ n.created_at|date:"Y-m-d H:i" }})</small>
+    </a>
+{% empty %}
+    <li>No notifications yet.</li>
+{% endfor %}
+</ul>
+<script>
+function fetchNotifications() {
+    fetch("{% url 'admin_notifications_api' %}")
+        .then(response => response.json())
+        .then(data => {
+            let list = document.getElementById("notifications-list");
+            list.innerHTML = "";
+            if (data.notifications.length === 0) {
+                list.innerHTML = "<li>No notifications yet.</li>";
+            } else {
+                data.notifications.forEach(n => {
+                    let li = document.createElement("li");
+                    if (!n.is_read) {
+                        li.style.fontWeight = "bold";
+                    }
+                    li.textContent = `${n.message} - ${n.created_at}`;
+                    list.appendChild(li);
+                });
+            }
+        });
+}
+
+// Poll every 10 seconds
+setInterval(fetchNotifications, 10000);
+</script>
+{% endblock %}
+

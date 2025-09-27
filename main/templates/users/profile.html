@@ -1,0 +1,19 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h2>My Profile</h2>
+<p><strong>Name:</strong> {{ customer.name }}</p>
+<p><strong>Username:</strong> {{ customer.username }}</p>
+<p><strong>GST Number:</strong> {{ customer.gst_number }}</p>
+<p><strong>Pincode:</strong> {{ customer.pincode }}</p>
+<p><strong>Address:</strong> {{ customer.address }}</p>
+<p><strong>Location:</strong> 
+   {% if customer.location %}
+       {{ customer.location }}
+   {% else %}
+       Not set
+   {% endif %}
+</p>
+
+<a href="{% url 'edit_customer_profile' %}" class="btn btn-primary">Edit Profile</a>
+{% endblock %}

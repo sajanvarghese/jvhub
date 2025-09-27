@@ -1,0 +1,141 @@
+<!-- templates/admin/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wholesale Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+  body {
+    margin: 0;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    height: 100vh;        /* Full height */
+    position: fixed;      /* Make it stick */
+    top: 0;
+    left: 0;
+    background-color: #343a40;
+    color: white;
+    overflow-y: auto;     /* Scroll if needed */
+  }
+
+  .sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+  }
+
+  .sidebar a:hover {
+    background-color: #495057;
+  }
+
+  /* Content */
+  .content {
+    margin-left: 250px;   /* Push content to the right of sidebar */
+    padding: 20px;
+  }
+
+  /* Navbar */
+  nav.navbar {
+    position: sticky;     /* Stick on top */
+    top: 0;
+    z-index: 1000;
+  }
+
+  /* Notifications styling */
+  .notif-unread a {
+    color: white;
+    text-decoration: none;
+  }
+  .notif-read a {
+    color: #6c757d;
+    text-decoration: none;
+  }
+  .notif-unread {
+    background-color: #f8f9fa !important;  /* very light grey */
+    font-weight: 500;  /* make text slightly bold */
+  }
+  .notif-read {
+    background-color: white;
+  }
+  .notif-unread a:hover,
+  .notif-read a:hover {
+    text-decoration: underline;
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+</style>
+
+</head>
+<body>
+<div class="sidebar">
+  <h4 class="p-3">Admin Panel</h4>
+  <a href="{% url 'admin_dashboard' %}">
+    <i class="bi bi-house-door-fill me-2"></i> Home
+  </a>
+  <a href="{% url 'admin_orders' %}">
+    <i class="bi bi-box-seam me-2"></i> Orders
+  </a>
+  <a href="{% url 'products' %}">
+    <i class="bi bi-bag-fill me-2"></i> Products
+  </a>
+  <a href="{% url 'admin_stores' %}">
+    <i class="bi bi-shop me-2"></i> Stores
+  </a>
+<a href="{% url 'routes' %}">
+  <i class="bi bi-truck me-2"></i> Routes
+</a>
+  <a href="{% url 'admin_reports' %}">
+    <i class="bi bi-bar-chart-fill me-2"></i> Reports
+  </a>
+</div>
+
+
+  <div class="content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
+      <div class="container-fluid">
+        <span class="navbar-brand">Admin Dashboard</span>
+                <!-- Search Bar -->
+        <form class="d-flex ms-auto" method="get" action="{% url 'products' %}">
+          <input class="form-control me-2" type="search" name="q" placeholder="Search products..." value="{{ request.GET.q }}">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item position-relative">
+          <a class="nav-link position-relative" href="{% url 'admin_notifications' %}">
+            <i class="bi bi-bell me-1"></i> Notifications
+              {% if unread_count > 0 %}
+              <span class="badge bg-danger rounded-pill notification-badge">{{ unread_count }}</span>
+              {% endif %}
+          </a>
+
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger" href="{% url 'admin_logout' %}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Page-specific content -->
+    {% block content %}{% endblock %}
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+<div class="container">
+  <h2>Manage Delivery Routes</h2>
+
+  <!-- Add Route -->
+  <form method="post">
+    {% csrf_token %}
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="day" class="form-label">Day</label>
+        <select name="day" class="form-select">
+          <option value="monday">Monday</option>
+          <option value="tuesday">Tuesday</option>
+          <option value="wednesday">Wednesday</option>
+          <option value="thursday">Thursday</option>
+          <option value="friday">Friday</option>
+          <option value="saturday">Saturday</option>
+          <option value="sunday">Sunday</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="location" class="form-control" placeholder="Enter location">
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Add</button>
+      </div>
+    </div>
+  </form>
+
+  <h4 class="mt-4">Existing Routes</h4>
+
+  {% if routes %}
+    {% regroup routes by day as routes_by_day %}
+
+    <div class="accordion" id="routesAccordion">
+      {% for group in routes_by_day %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+          <button class="accordion-button collapsed" type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse{{ forloop.counter }}"
+                  aria-expanded="false"
+                  aria-controls="collapse{{ forloop.counter }}">
+            {{ group.grouper|capfirst }}
+          </button>
+        </h2>
+        <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" 
+             aria-labelledby="heading{{ forloop.counter }}"
+             data-bs-parent="#routesAccordion">
+          <div class="accordion-body">
+            <ul class="list-group">
+              {% for route in group.list %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ route.location }}
+                <a href="{% url 'delete_route' route.id %}" class="btn btn-sm btn-danger">Remove</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No routes added yet.</p>
+  {% endif %}
+
+</div>
+{% endblock %}

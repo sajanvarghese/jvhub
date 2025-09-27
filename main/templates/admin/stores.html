@@ -1,0 +1,43 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Stores and Customer Locations</h2>
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Store Name</th>
+                <th>Owner Name</th>
+                <th>Customer Location</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for store in stores %}
+            <tr>
+                <!-- Store name as a link to detail page -->
+                <td>
+                    <a href="{% url 'store_detail' store.id %}">
+                        {{ store.store_name }}
+                    </a>
+                </td>
+                <td>{{ store.owner_name }}</td>
+                <td>{{ store.location }}</td>
+                <!-- Delete button -->
+                <td>
+                    <form method="POST" action="{% url 'delete_store' store.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not stores %}
+        <p class="text-muted">No stores available.</p>
+    {% endif %}
+</div>
+{% endblock %}

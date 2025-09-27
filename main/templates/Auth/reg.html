@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | My Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+        }
+        nav {
+            background: #007BFF;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav h1 { color: white; margin: 0; }
+        nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
+        nav ul li { margin-left: 15px; }
+        nav ul li a { color: white; text-decoration: none; font-weight: bold; }
+        nav ul li a:hover { text-decoration: underline; }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            max-width: 400px;
+            margin: 50px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2 { text-align: center; margin-bottom: 20px; }
+        input, textarea, button {
+            width: 100%; padding: 10px; margin-top: 10px;
+            border-radius: 5px; border: 1px solid #ccc; font-size: 16px;
+        }
+        button {
+            background: #007BFF; color: white; border: none; cursor: pointer;
+        }
+        button:hover { background: #0056b3; }
+        .hidden { display: none; }
+        .btn-row { display: flex; justify-content: space-between; }
+        .error { color: red; font-size: 14px; display: none; }
+
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700; /* bold heading */
+    font-size: 48px;
+    text-align: center;
+    color: #2c3e50;
+  }
+
+  p {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400; /* regular paragraph */
+    font-size: 16px;
+  }
+    </style>
+</head>
+<body>
+    {% comment %} <nav> {% endcomment %}
+<h1 class="main-heading">J&V Agency</h1>
+        {% comment %} <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+        </ul>
+    </nav> {% endcomment %}
+
+    <div class="form-container">
+        <h2>Register</h2>
+    {% if messages %}
+        <ul style="color:red;">
+            {% for msg in messages %}
+                <li>{{ msg }}</li>
+             {% endfor %}
+        </ul>
+    {% endif %}
+        <form method="post" onsubmit="return validateForm()" >
+            {% csrf_token %}
+
+            <!-- Step 1 -->
+            <!-- Step 1 -->
+<div id="step1">
+    <input type="text" name="name" placeholder="Store Name" required>
+    <input type="text" name="username" placeholder="Username" required>
+    
+    <!-- GST Number Validation -->
+    <input type="text" id="gst" name="gst_number" placeholder="GST Number"
+           pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$"
+           title="Enter valid 15-digit GSTIN (e.g. 22AAAAA0000A1Z5)" required>
+    <p id="gst-error" class="error">❌ Invalid GST number</p>
+    
+    <input type="text" name="pincode" placeholder="Pincode" required>
+    <textarea name="address" placeholder="Address" required></textarea>
+
+    <!-- 🔽 Location Dropdown -->
+    <label for="location">Select Location</label>
+    <select name="location" id="location" required>
+        <option value="">-- Select Location --</option>
+        {% for route in routes %}
+            <option value="{{ route.location }}">{{ route.location }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="button" onclick="nextStep()">Next</button>
+</div>            <!-- Step 2 -->
+            <div id="step2" class="hidden">
+                <input type="password" id="pass1" name="password1" placeholder="Password" required>
+                <input type="password" id="pass2" name="password2" placeholder="Confirm Password" required>
+                <p id="pass-error" class="error">❌ Passwords do not match</p>
+
+                <div class="btn-row">
+                    <button type="button" onclick="backStep()">Back</button>
+                    <button type="submit">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function nextStep() {
+    let gst = document.getElementById("gst").value.trim();
+    let regex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+
+    if (!regex.test(gst)) {
+        document.getElementById("gst-error").style.display = "block";
+        return;
+    } else {
+        document.getElementById("gst-error").style.display = "none";
+    }
+
+    // 🔑 Remove required from step1 fields
+    document.querySelectorAll("#step1 input, #step1 textarea").forEach(el => {
+        el.removeAttribute("required");
+    });
+
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
+
+    // 🔑 Add required to step2 fields
+    document.querySelectorAll("#step2 input").forEach(el => {
+        el.setAttribute("required", "true");
+    });
+}
+
+function backStep() {
+    // 🔑 Restore required on step1 fields
+    document.querySelectorAll("#step1 input, #step1 textarea").forEach(el => {
+        el.setAttribute("required", "true");
+    });
+
+    // 🔑 Remove required from step2 fields
+    document.querySelectorAll("#step2 input").forEach(el => {
+        el.removeAttribute("required");
+    });
+
+    document.getElementById("step2").classList.add("hidden");
+    document.getElementById("step1").classList.remove("hidden");
+}
+
+function validateForm() {
+    let pass1 = document.getElementById("pass1").value;
+    let pass2 = document.getElementById("pass2").value;
+
+    if (pass1 !== pass2) {
+        document.getElementById("pass-error").style.display = "block";
+        return false;
+    }
+    document.getElementById("pass-error").style.display = "none";
+    return true;
+}
+
+    </script>
+</body>
+</html>

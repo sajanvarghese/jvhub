@@ -1,0 +1,58 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<div class="card shadow-sm mt-4" style="max-width: 400px; margin: auto;">
+    <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">Price: ₹{{ product.price }}</p>
+        <p class="card-text">MRP: <del>₹{{ product.MRP }}</del></p>
+        <p class="card-text"><strong>Minimum Quantity:</strong> {{ product.min_amount }}</p>
+
+        <form method="post" action="{% url 'order_product' product.id %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Enter Quantity:</label>
+                <input type="number" 
+                       name="quantity" 
+                       id="quantity" 
+                       value="{{ product.min_amount }}" 
+                       min="{{ product.min_amount }}" 
+                       class="form-control"
+                       required
+                       oninput="updateTotal()"
+                       oninput="validateQuantity()">
+            </div>
+
+            <p><strong>Total Amount: ₹<span id="total">{{ product.min_amount|floatformat:0|add:"0"|floatformat:0 }}</span></strong></p>
+
+            <button type="submit" class="btn btn-success w-100">Confirm Order</button>
+        </form>
+
+        <!-- Cancel Order button -->
+        <form method="get" action="{% url 'user_dashboard' %}" class="mt-2">
+            <button type="submit" class="btn btn-danger w-100">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function updateTotal() {
+        const quantity = document.getElementById("quantity").value;
+        const price = {{ product.price }};
+        document.getElementById("total").innerText = (quantity * price).toFixed(2);
+    }
+    function validateQuantity() {
+        const input = document.getElementById("quantity");
+        const min = {{ product.min_amount }};
+        const price = {{ product.price }};
+        
+        let value = parseInt(input.value) || min;
+        if (value < min) {
+            value = min;
+            input.value = min;  
+        }
+
+        document.getElementById("total").innerText = value * price;
+    }
+</script>
+{% endblock %}

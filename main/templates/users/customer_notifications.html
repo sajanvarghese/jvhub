@@ -1,0 +1,35 @@
+{% extends "users/base.html" %}
+{% block title %}My Notifications{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3 class="mb-4">🔔 My Notifications</h3>
+
+  {% if notifications %}
+    <div class="list-group">
+      {% for notif in notifications %}
+        <div class="list-group-item notification-item {% if not notif.is_read %}unread{% else %}read{% endif %}">
+          <p class="mb-1">{{ notif.message }}</p>
+          <small class="notification-time">{{ notif.created_at|date:"M d, Y H:i" }}</small>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">No notifications yet.</p>
+  {% endif %}
+</div>
+
+<style>
+.notification-item.unread {
+  background-color: #f1f3f5; /* light grey */
+  font-weight: 500;
+}
+.notification-item.read {
+  background-color: #ffffff;
+}
+.notification-time {
+  font-size: 12px;
+  color: #6c757d;
+}
+</style>
+{% endblock %}

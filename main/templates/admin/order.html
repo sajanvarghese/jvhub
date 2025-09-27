@@ -1,0 +1,43 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+<h2>Orders by Store</h2>
+
+{% for store, orders in stores.items %}
+    <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px;">
+        <h3>{{ store }}</h3>
+        <button onclick="toggleOrders('{{ forloop.counter }}')">View Orders</button>
+
+        <table id="orders-{{ forloop.counter }}" style="display:none; margin-top:10px;" border="1" cellpadding="8" cellspacing="0" width="100%">
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Amount</th>
+                <th>Date</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.product.name }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>₹{% widthratio order.quantity 1 order.product.price %}</td>
+                <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight:bold; background:#f2f2f2;">
+                <td colspan="2" align="right">Grand Total:</td>
+                <td colspan="2">₹{{ grand_total }}</td>
+            </tr>
+        </table>
+    </div>
+{% empty %}
+    <p>No orders found.</p>
+{% endfor %}
+
+<script>
+function toggleOrders(id) {
+    const table = document.getElementById("orders-" + id);
+    table.style.display = (table.style.display === "none") ? "table" : "none";
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "users/base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Available Products</h2>
+
+{% if products %}
+<div class="row g-2">
+  {% for product in products %}
+  <div class="col-auto">
+    <div class="card text-center p-2" style="width: 12rem; font-size: 13px;">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" 
+           class="img-fluid mb-1" style="max-height: 80px; margin: auto; border-radius: 6px;">
+      {% else %}
+      <img src="{% static 'images/no-image.png' %}" alt="No image" 
+           class="img-fluid mb-1" style="max-height: 80px; margin: auto; border-radius: 6px;">
+      {% endif %}
+
+      <div class="card-body p-2">
+        <h6 class="card-title mb-1">{{ product.name }}</h6>
+        <p class="card-text mb-1" style="color: #555;">
+          ₹{{ product.price }} 
+          {% if product.MRP %}<del class="text-muted">₹{{ product.MRP }}</del>{% endif %} <br>
+          Qty: {{ product.Quantity }}
+        </p>
+        <a href="{% url 'order_product' product.id %}" class="btn btn-sm btn-primary">Order</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<p>No products found.</p>
+{% endif %}
+{% endblock %}

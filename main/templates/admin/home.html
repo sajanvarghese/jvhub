@@ -1,0 +1,102 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+<!-- Dashboard Metrics -->
+<div class="row">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary">
+      <div class="card-body">
+        <h5 class="card-title">Total Orders</h5>
+        <p class="card-text fs-4">{{ total_orders }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success">
+      <div class="card-body">
+        <h5 class="card-title">Total Revenue</h5>
+        <p class="card-text fs-4">₹ {{ total_revenue|floatformat:2 }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-info">
+      <div class="card-body">
+        <h5 class="card-title">Active Stores</h5>
+        <p class="card-text fs-4">{{ active_stores }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-secondary">
+      <div class="card-body">
+        <h5 class="card-title">Inactive Stores</h5>
+        <p class="card-text fs-4">{{ inactive_stores }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Orders Trend Table -->
+<h4 class="mt-4">Orders in Last 7 Days</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Orders</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for date, count in orders_trend %}
+    <tr>
+      <td>{{ date|date:"Y-m-d" }}</td>
+      <td>{{ count }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="2">No orders in last 7 days.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Top 5 Products -->
+<h4 class="mt-4">Top 5 Products</h4>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Product Name</th>
+      <th>Quantity Sold</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in top_products %}
+    <tr>
+      <td>{{ product.product__name }}</td>
+      <td>{{ product.total_qty }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="2">No products sold yet.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Latest 3 Notifications -->
+<h4 class="mt-4">Latest Notifications</h4>
+<ul class="list-group">
+  {% for notif in notifications %}
+  <li class="list-group-item {% if not notif.is_read %}notif-unread{% else %}notif-read{% endif %}">
+    <a href="{% url 'notification_redirect' notif.id %}">
+      {{ notif.message }} - {{ notif.created_at|date:"Y-m-d H:i" }}
+    </a>
+  </li>
+  {% empty %}
+  <li class="list-group-item">No notifications.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

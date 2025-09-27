@@ -1,3 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
+from .user_views import home, login_view, register
+from.udash_views import user_dashboard,customer_profile,edit_customer_profile,order_product
+from.adash_views import admin_dashboard,add_product,edit_product,delete_product,admin_logout,product_list, routes_view,delete_route ,notifications_api,notifications,notification_redirect

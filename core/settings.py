@@ -66,10 +66,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
 ]
+AUTH_USER_MODEL = "main.SuperUser"
+
+
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
@@ -79,8 +83,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'db.izhhbnqapegnaxosvxiz.supabase.co',  # example
+        'PORT': '5432',  # example
+        'NAME': 'postgres',  # your database name
+        'USER': 'postgres',  # your Supabase DB user
+        'PASSWORD': 'Sajannever@2154',
     }
 }
 
@@ -125,3 +133,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
+

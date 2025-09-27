@@ -1,0 +1,56 @@
+{% extends "admin/admin.html" %}
+
+
+{% block content %}
+<a href="{% url 'products' %}" class="btn btn-secondary mb-3">👀 View Products</a>
+<h2>Add Product</h2>
+
+<form method="POST" enctype="multipart/form-data" class="card p-4 shadow-sm">
+  {% csrf_token %}
+  
+  <div class="mb-3">
+    <label class="form-label">Name</label>
+    {{ form.name }}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    {{ form.category }}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Price</label>
+    {{ form.price }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">MRP</label>
+    {{ form.MRP }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Quantity</label>
+    {{ form.Quantity }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Stock</label>
+    {{ form.stock }}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Unit</label>
+    {{ form.unit }}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    {{ form.description }}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Image</label>
+    {{ form.image }}
+  </div>
+
+  <button type="submit" class="btn btn-success">Save Product</button>
+  <a href="{% url 'products' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
